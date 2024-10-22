@@ -5,3 +5,5 @@ edition = "2021"
 
 [dependencies]
 leptos = { version = "0.6.15", features = ["csr", "nightly"] }
+leptos-use = { path = "../leptos-use" }
+log = "0.4.22"

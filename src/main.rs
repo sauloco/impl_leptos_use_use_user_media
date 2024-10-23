@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_use::{use_user_media, UseUserMediaReturn};
+use leptos_use::{FacingMode, MediaTrackConstraintsBuilder, use_user_media_with_options, UseUserMediaOptions, UseUserMediaReturn};
 
 #[component]
 fn Demo() -> impl IntoView {
@@ -10,7 +10,19 @@ fn Demo() -> impl IntoView {
         enabled,
         set_enabled,
         ..
-    } = use_user_media();
+    } = use_user_media_with_options(
+        UseUserMediaOptions::default()
+          .video(
+              MediaTrackConstraintsBuilder::new()
+                .value(false.into())
+                .build()
+          )
+          .audio(
+              MediaTrackConstraintsBuilder::new()
+                .value(true.into())
+                .build()
+          ),
+    );
 
     create_effect(move |_| {
         match stream.get() {

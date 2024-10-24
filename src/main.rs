@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_use::{AudioTrackConstraints, FacingMode, use_user_media_with_options, UseUserMediaOptions, UseUserMediaReturn, VideoTrackConstraints};
+use leptos_use::{AudioTrackConstraints, ConstraintBool, ConstraintDouble, ConstraintFacingMode, ConstraintULong, FacingMode, use_user_media_with_options, UseUserMediaOptions, UseUserMediaReturn, VideoTrackConstraints};
 
 #[component]
 fn Demo() -> impl IntoView {
@@ -14,19 +14,21 @@ fn Demo() -> impl IntoView {
         UseUserMediaOptions::default()
           .video(
               VideoTrackConstraints::new()
-                .frame_rate_range(None, None, None, None)
+                .frame_rate(ConstraintDouble::default().exact(30f64))
                 .facing_mode(FacingMode::User)
+                .facing_mode(ConstraintFacingMode::default().exact(FacingMode::Environment))
+          )
+          .audio(
+              AudioTrackConstraints::new()
+                .device_id("USB Audio Device")
+                // TODO: implement
+                // .device_ids(vec!["default".into(), "foo".into()])
+                .auto_gain_control(ConstraintBool::default().exact(true))
+                .channel_count(ConstraintULong::default().min(1).max(3))
+                .echo_cancellation(true)
+                .noise_suppression(true)
 
           )
-          // .audio(
-          //     AudioTrackConstraints::new()
-          //       .device_id("default".into())
-          //       .auto_gain_control(true)
-          //       .channel_count(true)
-          //       .echo_cancellation(true)
-          //       .noise_suppression(true)
-          //
-          // )
     );
 
     create_effect(move |_| {

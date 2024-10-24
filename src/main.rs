@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_use::{FacingMode, MediaTrackConstraintsBuilder, use_user_media_with_options, UseUserMediaOptions, UseUserMediaReturn};
+use leptos_use::{AudioTrackConstraints, FacingMode, use_user_media_with_options, UseUserMediaOptions, UseUserMediaReturn, VideoTrackConstraints};
 
 #[component]
 fn Demo() -> impl IntoView {
@@ -13,15 +13,20 @@ fn Demo() -> impl IntoView {
     } = use_user_media_with_options(
         UseUserMediaOptions::default()
           .video(
-              MediaTrackConstraintsBuilder::new()
-                .value(false.into())
-                .build()
+              VideoTrackConstraints::new()
+                .frame_rate_range(None, None, None, None)
+                .facing_mode(FacingMode::User)
+
           )
-          .audio(
-              MediaTrackConstraintsBuilder::new()
-                .value(true.into())
-                .build()
-          ),
+          // .audio(
+          //     AudioTrackConstraints::new()
+          //       .device_id("default".into())
+          //       .auto_gain_control(true)
+          //       .channel_count(true)
+          //       .echo_cancellation(true)
+          //       .noise_suppression(true)
+          //
+          // )
     );
 
     create_effect(move |_| {
